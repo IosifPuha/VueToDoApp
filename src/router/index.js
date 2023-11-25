@@ -1,27 +1,47 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import TodoView from '../views/TodoView.vue'
+import goTo from 'vuetify/lib/services/goto'
 
+import ListCompletedTasks from '../components/Todo/ListCompletedTasks'
+import LoginView from '../views/LoginView'
+import AlboView from '../views/AlboView'
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    name: 'List',
+    component: TodoView
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/completed',
+    name: 'Completed',
+    component: ListCompletedTasks
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: LoginView
+  },
+  {
+    path: '/albo',
+    name: 'Albo',
+    component: AlboView
   }
 ]
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, _, next) => { // to, from, next
+  document.title = `TO-DO APP | ${to.name}`
+  next()
+})
+
+router.afterEach(() => { // to, from
+  goTo(0, { duration: 0 })
 })
 
 export default router
